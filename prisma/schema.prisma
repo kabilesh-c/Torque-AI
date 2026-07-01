@@ -1,0 +1,57 @@
+// Prisma schema for AI Voice Mock Interview Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  jobRole      String    @default("")
+  experience   String    @default("0-2 years")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  sessions     Session[]
+}
+
+model Session {
+  id            String          @id @default(cuid())
+  userId        String
+  user          User            @relation(fields: [userId], references: [id])
+  interviewType String          // BEHAVIORAL | TECHNICAL | SYSTEM_DESIGN | HR_CULTURE
+  status        String          @default("IN_PROGRESS") // IN_PROGRESS | COMPLETED | ABANDONED
+  startedAt     DateTime        @default(now())
+  endedAt       DateTime?
+  vapiCallId    String?
+  transcript    Turn[]
+  report        FeedbackReport?
+}
+
+model Turn {
+  id        String   @id @default(cuid())
+  sessionId String
+  session   Session  @relation(fields: [sessionId], references: [id])
+  speaker   String   // "AI" | "CANDIDATE"
+  text      String
+  graphNode String?  // which LangGraph node produced this (for debugging)
+  timestamp DateTime @default(now())
+}
+
+model FeedbackReport {
+  id           String   @id @default(cuid())
+  sessionId    String   @unique
+  session      Session  @relation(fields: [sessionId], references: [id])
+  overallScore Int      // 1-10
+  strengths    Json     // string[]
+  weaknesses   Json     // string[]
+  starAnalysis Json?    // { situation, task, action, result } coverage booleans + notes
+  summary      String
+  createdAt    DateTime @default(now())
+}
