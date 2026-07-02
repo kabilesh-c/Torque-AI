@@ -26,20 +26,11 @@ export function buildAssistantConfig(config: VapiAssistantConfig) {
     voice: {
       provider: "11labs",
       voiceId: "21m00Tcm4TlvDq8ikWAM", // Standard ElevenLabs voice
-      stability: 0.35,  // Emotive & faster generation
-      similarityBoost: 0.75,
-      style: 0.05,
-      useSpeakerBoost: true,
-      chunkPlan: {
-        enabled: true,
-        minChunks: 1, // Stream voice instantly
-      }
     },
     model: {
       provider: "custom-llm",
       url: `${appUrl}/api/sessions/${config.sessionId}/turn`,
       model: "gpt-4o-mini",
-      temperature: 0.7,
     },
     firstMessage: config.openingMessage,
     transcriber: {
@@ -47,10 +38,7 @@ export function buildAssistantConfig(config: VapiAssistantConfig) {
       model: "nova-2",
       language: "en-US",
     },
-    backchannelingEnabled: true, // Enables verbal nods (mm-hmm, uh-huh)
-    backgroundSound: "office", // Faint background noise for realism
-    interruptionThresholdSeconds: 0.35, // Interruption is detected in 350ms
-    silenceTimeoutSeconds: 15, // Faster timeout detection
+    silenceTimeoutSeconds: 30, // Faster timeout detection
     maxDurationSeconds: 1800, // 30 min max
     endCallFunctionEnabled: false,
     recordingEnabled: false,
