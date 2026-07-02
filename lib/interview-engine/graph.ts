@@ -61,26 +61,26 @@ function routeEntry(state: InterviewState): string {
 export function buildInterviewGraph() {
   const graph = new StateGraph<InterviewState>({
     channels: {
-      sessionId: { value: (a: string, b: string) => b ?? a },
-      interviewType: { value: (a: string, b: string) => b ?? a },
-      candidateProfile: { value: (a: object, b: object) => b ?? a },
+      sessionId: { value: (a: any, b: any) => b ?? a },
+      interviewType: { value: (a: any, b: any) => b ?? a },
+      candidateProfile: { value: (a: any, b: any) => b ?? a },
       transcript: {
-        value: (a: InterviewState["transcript"], b: InterviewState["transcript"]) => b ?? a,
+        value: (a: any, b: any) => b ?? a,
         default: () => [],
       },
-      currentQuestionTopic: { value: (a: string, b: string) => b ?? a, default: () => "" },
+      currentQuestionTopic: { value: (a: any, b: any) => b ?? a, default: () => "" },
       followUpCountForCurrentQuestion: {
-        value: (a: number, b: number) => b ?? a,
+        value: (a: any, b: any) => b ?? a,
         default: () => 0,
       },
-      topicsCovered: { value: (a: string[], b: string[]) => b ?? a, default: () => [] },
-      topicsPlanned: { value: (a: string[], b: string[]) => b ?? a, default: () => [] },
-      turnCount: { value: (a: number, b: number) => b ?? a, default: () => 0 },
-      maxTurns: { value: (a: number, b: number) => b ?? a, default: () => 16 },
-      lastAnswerQuality: { value: (a: AnswerQuality | undefined, b: AnswerQuality | undefined) => b ?? a },
-      lastAIMessage: { value: (a: string | undefined, b: string | undefined) => b ?? a },
-      isComplete: { value: (a: boolean, b: boolean) => b ?? a, default: () => false },
-      error: { value: (a: string | undefined, b: string | undefined) => b ?? a },
+      topicsCovered: { value: (a: any, b: any) => b ?? a, default: () => [] },
+      topicsPlanned: { value: (a: any, b: any) => b ?? a, default: () => [] },
+      turnCount: { value: (a: any, b: any) => b ?? a, default: () => 0 },
+      maxTurns: { value: (a: any, b: any) => b ?? a, default: () => 16 },
+      lastAnswerQuality: { value: (a: any, b: any) => b ?? a },
+      lastAIMessage: { value: (a: any, b: any) => b ?? a },
+      isComplete: { value: (a: any, b: any) => b ?? a, default: () => false },
+      error: { value: (a: any, b: any) => b ?? a },
     },
   });
 
