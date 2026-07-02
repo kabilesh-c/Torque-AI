@@ -85,7 +85,6 @@ export function buildInterviewGraph() {
   });
 
   // Add all nodes
-  graph.addNode("start", (state) => state);
   graph.addNode("intro", introNode);
   graph.addNode("evaluate_answer", evaluateAnswerNode);
   graph.addNode("follow_up", followUpNode);
@@ -94,11 +93,8 @@ export function buildInterviewGraph() {
   graph.addNode("ask_question", askQuestionNode);
   graph.addNode("wrap_up", wrapUpNode);
 
-  // Set entry point
-  graph.setEntryPoint("start");
-
-  // Conditional entry routing
-  graph.addConditionalEdges("start", routeEntry, {
+  // Set conditional entry point
+  graph.setConditionalEntryPoint(routeEntry, {
     intro: "intro",
     evaluate_answer: "evaluate_answer",
   });
