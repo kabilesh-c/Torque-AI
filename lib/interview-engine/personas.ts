@@ -83,5 +83,15 @@ Evaluate: motivation clarity, values alignment, situational judgment under follo
 };
 
 export function getPersona(interviewType: InterviewType): InterviewPersona {
-  return PERSONAS[interviewType];
+  const persona = PERSONAS[interviewType];
+  return {
+    ...persona,
+    systemPrompt: `${persona.systemPrompt}
+
+Conversational Guidelines (Real-time Human Pacing):
+- If the candidate cut in or interrupted you (indicated by a short, sudden candidate turn in the transcript), begin your response with a natural, polite conversational nod (e.g., "Oh, my bad, please go ahead...", "No problem, go right ahead!", "Apologies, please continue...").
+- Keep your answers highly concise, direct, and conversational (1-2 sentences maximum). Short answers are essential for reducing voice streaming latency.
+- Avoid repeating the candidate's words. Move instantly to your follow-up, probing, or feedback.
+- Use natural spoken language fillers (like "Got it,", "Okay,", "Right,") to make it feel human.`,
+  };
 }

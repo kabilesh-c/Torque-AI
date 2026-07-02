@@ -47,35 +47,45 @@ function routeAfterAcknowledge(state: InterviewState): string {
   return "ask_question";
 }
 
+function routeEntry(state: InterviewState): string {
+  // If we have a candidate response as the latest turn, go directly to evaluation
+  const lastTurn = state.transcript[state.transcript.length - 1];
+  if (lastTurn && lastTurn.speaker === "CANDIDATE") {
+    return "evaluate_answer";
+  }
+  return "intro";
+}
+
 // ─── Graph builder ────────────────────────────────────────────────────────────
 
 export function buildInterviewGraph() {
   const graph = new StateGraph<InterviewState>({
     channels: {
-      sessionId: { value: (x: string) => x },
-      interviewType: { value: (x: string) => x },
-      candidateProfile: { value: (x: object) => x },
+      sessionId: { value: (a: string, b: string) => b ?? a },
+      interviewType: { value: (a: string, b: string) => b ?? a },
+      candidateProfile: { value: (a: object, b: object) => b ?? a },
       transcript: {
-        value: (x: InterviewState["transcript"]) => x,
+        value: (a: InterviewState["transcript"], b: InterviewState["transcript"]) => b ?? a,
         default: () => [],
       },
-      currentQuestionTopic: { value: (x: string) => x, default: () => "" },
+      currentQuestionTopic: { value: (a: string, b: string) => b ?? a, default: () => "" },
       followUpCountForCurrentQuestion: {
-        value: (x: number) => x,
+        value: (a: number, b: number) => b ?? a,
         default: () => 0,
       },
-      topicsCovered: { value: (x: string[]) => x, default: () => [] },
-      topicsPlanned: { value: (x: string[]) => x, default: () => [] },
-      turnCount: { value: (x: number) => x, default: () => 0 },
-      maxTurns: { value: (x: number) => x, default: () => 16 },
-      lastAnswerQuality: { value: (x: AnswerQuality | undefined) => x },
-      lastAIMessage: { value: (x: string | undefined) => x },
-      isComplete: { value: (x: boolean) => x, default: () => false },
-      error: { value: (x: string | undefined) => x },
+      topicsCovered: { value: (a: string[], b: string[]) => b ?? a, default: () => [] },
+      topicsPlanned: { value: (a: string[], b: string[]) => b ?? a, default: () => [] },
+      turnCount: { value: (a: number, b: number) => b ?? a, default: () => 0 },
+      maxTurns: { value: (a: number, b: number) => b ?? a, default: () => 16 },
+      lastAnswerQuality: { value: (a: AnswerQuality | undefined, b: AnswerQuality | undefined) => b ?? a },
+      lastAIMessage: { value: (a: string | undefined, b: string | undefined) => b ?? a },
+      isComplete: { value: (a: boolean, b: boolean) => b ?? a, default: () => false },
+      error: { value: (a: string | undefined, b: string | undefined) => b ?? a },
     },
   });
 
   // Add all nodes
+  graph.addNode("start", (state) => state);
   graph.addNode("intro", introNode);
   graph.addNode("evaluate_answer", evaluateAnswerNode);
   graph.addNode("follow_up", followUpNode);
@@ -85,7 +95,13 @@ export function buildInterviewGraph() {
   graph.addNode("wrap_up", wrapUpNode);
 
   // Set entry point
-  graph.setEntryPoint("intro");
+  graph.setEntryPoint("start");
+
+  // Conditional entry routing
+  graph.addConditionalEdges("start", routeEntry, {
+    intro: "intro",
+    evaluate_answer: "evaluate_answer",
+  });
 
   // Static edges
   graph.addEdge("intro", "ask_question");
