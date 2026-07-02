@@ -69,14 +69,33 @@ export default function InterviewSessionPage({ params }: PageProps) {
 
   const handleStartCall = useCallback(async () => {
     if (!sessionData?.openingMessage) return;
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
+    let appUrl = process.env.NEXT_PUBLIC_APP_URL || "";
+    if (typeof window !== "undefined" && window.location.hostname !== "localhost") {
+      appUrl = window.location.origin;
+    }
+    if (!appUrl && typeof window !== "undefined") {
+      appUrl = window.location.origin;
+    }
 
     const assistantConfig = {
       name: "Torque",
-      voice: { provider: "11labs", voiceId: "burt" },
+      voice: {
+        provider: "11labs",
+        voiceId: "21m00Tcm4TlvDq8ikWAM",
+        stability: 0.35,
+        similarityBoost: 0.75,
+        style: 0.05,
+        useSpeakerBoost: true,
+        chunkPlan: {
+          enabled: true,
+          minChunks: 1,
+        }
+      },
       model: {
         provider: "custom-llm",
         url: `${appUrl}/api/sessions/${id}/turn`,
+        model: "gpt-4o-mini",
+        temperature: 0.7,
       },
       firstMessage: sessionData.openingMessage,
       transcriber: {
@@ -84,7 +103,10 @@ export default function InterviewSessionPage({ params }: PageProps) {
         model: "nova-2",
         language: "en-US",
       },
-      silenceTimeoutSeconds: 30,
+      backchannelingEnabled: true,
+      backgroundSound: "office",
+      interruptionThresholdSeconds: 0.35,
+      silenceTimeoutSeconds: 15,
       maxDurationSeconds: 1800,
     };
 
