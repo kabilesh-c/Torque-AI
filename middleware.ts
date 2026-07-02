@@ -19,6 +19,12 @@ export async function middleware(req: NextRequest) {
   );
   const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route));
 
+  // Exclude Vapi webhook from authentication checks
+  const isTurnWebhook = pathname.startsWith("/api/sessions/") && pathname.endsWith("/turn");
+  if (isTurnWebhook) {
+    return NextResponse.next();
+  }
+
   if (!isProtected && !isAuthRoute) {
     return NextResponse.next();
   }
