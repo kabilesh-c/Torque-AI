@@ -1,4 +1,4 @@
-import { StateGraph, END } from "@langchain/langgraph";
+import { StateGraph, END, START } from "@langchain/langgraph";
 import { InterviewState, AnswerQuality } from "./state";
 import { introNode } from "./nodes/intro";
 import { evaluateAnswerNode } from "./nodes/evaluate-answer";
@@ -84,30 +84,32 @@ export function buildInterviewGraph() {
     },
   });
 
+  const g = graph as any;
+
   // Add all nodes
-  graph.addNode("intro", introNode);
-  graph.addNode("evaluate_answer", evaluateAnswerNode);
-  graph.addNode("follow_up", followUpNode);
-  graph.addNode("probe", probeNode);
-  graph.addNode("acknowledge_and_advance", acknowledgeAndAdvanceNode);
-  graph.addNode("ask_question", askQuestionNode);
-  graph.addNode("wrap_up", wrapUpNode);
+  g.addNode("intro", introNode);
+  g.addNode("evaluate_answer", evaluateAnswerNode);
+  g.addNode("follow_up", followUpNode);
+  g.addNode("probe", probeNode);
+  g.addNode("acknowledge_and_advance", acknowledgeAndAdvanceNode);
+  g.addNode("ask_question", askQuestionNode);
+  g.addNode("wrap_up", wrapUpNode);
 
   // Set conditional entry point
-  graph.setConditionalEntryPoint(routeEntry, {
+  g.addConditionalEdges(START, routeEntry, {
     intro: "intro",
     evaluate_answer: "evaluate_answer",
   });
 
   // Static edges
-  graph.addEdge("intro", "ask_question");
-  graph.addEdge("ask_question", END); // END here — Vapi provides next candidate turn
-  graph.addEdge("follow_up", END);
-  graph.addEdge("probe", END);
-  graph.addEdge("wrap_up", END);
+  g.addEdge("intro", "ask_question");
+  g.addEdge("ask_question", END); // END here — Vapi provides next candidate turn
+  g.addEdge("follow_up", END);
+  g.addEdge("probe", END);
+  g.addEdge("wrap_up", END);
 
   // Conditional routing after evaluation
-  graph.addConditionalEdges("evaluate_answer", routeAfterEvaluation, {
+  g.addConditionalEdges("evaluate_answer", routeAfterEvaluation, {
     follow_up: "follow_up",
     probe: "probe",
     acknowledge_and_advance: "acknowledge_and_advance",
@@ -115,12 +117,12 @@ export function buildInterviewGraph() {
   });
 
   // Conditional routing after acknowledge
-  graph.addConditionalEdges("acknowledge_and_advance", routeAfterAcknowledge, {
+  g.addConditionalEdges("acknowledge_and_advance", routeAfterAcknowledge, {
     ask_question: "ask_question",
     wrap_up: "wrap_up",
   });
 
-  return graph.compile();
+  return g.compile();
 }
 
 // ─── Per-turn entry point (used by Vapi webhook) ─────────────────────────────
