@@ -65,7 +65,7 @@ export async function POST(
       overallScore: report.overallScore,
       strengths: report.strengths,
       weaknesses: report.weaknesses,
-      starAnalysis: report.starAnalysis || null,
+      starAnalysis: report.starAnalysis ?? undefined,
       summary: report.summary,
     },
   });
