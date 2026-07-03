@@ -98,7 +98,18 @@ export default function InterviewSessionPage({ params }: PageProps) {
       maxDurationSeconds: 1800,
     };
 
-    await startCall(assistantConfig);
+    const assistantId = process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID;
+    if (assistantId) {
+      await startCall(assistantId, {
+        firstMessage: sessionData.openingMessage,
+        metadata: {
+          sessionId: id,
+          interviewType: sessionData.interviewType,
+        },
+      });
+    } else {
+      await startCall(assistantConfig);
+    }
     setCallStarted(true);
   }, [sessionData, id, startCall]);
 

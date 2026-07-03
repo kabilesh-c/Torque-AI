@@ -16,7 +16,7 @@ export interface UseVapiReturn {
   transcript: TranscriptEntry[];
   isMuted: boolean;
   volumeLevel: number;
-  startCall: (assistantConfig: object) => Promise<void>;
+  startCall: (assistant: string | object, overrides?: object) => Promise<void>;
   endCall: () => void;
   toggleMute: () => void;
   error: string | null;
@@ -92,7 +92,7 @@ export function useVapi(): UseVapiReturn {
     };
   }, []);
 
-  const startCall = useCallback(async (assistantConfig: object) => {
+  const startCall = useCallback(async (assistant: string | object, overrides?: object) => {
     const vapi = vapiRef.current;
     if (!vapi) {
       setError("Vapi not initialized. Check NEXT_PUBLIC_VAPI_API_KEY.");
@@ -102,7 +102,7 @@ export function useVapi(): UseVapiReturn {
     try {
       setStatus("connecting");
       setError(null);
-      await vapi.start(assistantConfig as Parameters<typeof vapi.start>[0]);
+      await vapi.start(assistant as any, overrides as any);
     } catch (err) {
       console.error("[VAPI START ERROR]", err);
       setError("Failed to start voice call. Check microphone permissions.");
