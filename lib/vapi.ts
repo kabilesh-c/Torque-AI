@@ -25,7 +25,7 @@ export function buildAssistantConfig(config: VapiAssistantConfig) {
     name: "Torque",
     voice: {
       provider: "11labs",
-      voiceId: "21m00Tcm4TlvDq8ikWAM", // Standard ElevenLabs voice
+      voiceId: "rachel", // Standard ElevenLabs voice
     },
     model: {
       provider: "custom-llm",

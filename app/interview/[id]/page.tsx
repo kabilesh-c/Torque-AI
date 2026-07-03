@@ -81,7 +81,7 @@ export default function InterviewSessionPage({ params }: PageProps) {
       name: "Torque",
       voice: {
         provider: "11labs",
-        voiceId: "21m00Tcm4TlvDq8ikWAM",
+        voiceId: "rachel",
       },
       model: {
         provider: "custom-llm",
