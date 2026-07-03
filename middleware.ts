@@ -20,9 +20,10 @@ export async function middleware(req: NextRequest) {
   const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route));
 
   // Exclude Vapi webhook from authentication checks
+  const cleanPath = pathname.replace(/\/$/, "");
   const isTurnWebhook = 
-    (pathname.startsWith("/api/sessions/") && pathname.endsWith("/turn")) ||
-    pathname === "/api/sessions/turn";
+    (cleanPath.startsWith("/api/sessions/") && cleanPath.endsWith("/turn")) ||
+    cleanPath === "/api/sessions/turn";
   if (isTurnWebhook) {
     return NextResponse.next();
   }
