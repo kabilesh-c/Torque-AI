@@ -10,8 +10,8 @@ export function getOpenAI(): OpenAI {
       apiKey: process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY,
       baseURL: isOpenRouter ? "https://openrouter.ai/api/v1" : undefined,
       defaultHeaders: isOpenRouter ? {
-        "HTTP-Referer": "https://mentorque.com",
-        "X-Title": "Mentorque",
+        "HTTP-Referer": "https://torque-llm.vercel.app",
+        "X-Title": "Torque AI",
       } : undefined,
     });
   }
@@ -30,12 +30,19 @@ export async function chatCompletion(
   maxTokens: number = 300
 ): Promise<string> {
   const client = getOpenAI();
-  const response = await client.chat.completions.create({
+  const params: OpenAI.Chat.ChatCompletionCreateParamsNonStreaming = {
     model,
     messages,
     max_tokens: maxTokens,
     temperature: 0.7,
-  });
+  };
+  if (process.env.OPENROUTER_API_KEY) {
+    // OpenRouter-only: route each request to the lowest-latency upstream
+    // provider — this is a live voice call, latency dominates.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (params as any).provider = { sort: "latency" };
+  }
+  const response = await client.chat.completions.create(params);
   return response.choices[0]?.message?.content?.trim() ?? "";
 }
 

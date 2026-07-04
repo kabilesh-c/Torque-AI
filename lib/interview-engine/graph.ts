@@ -125,6 +125,14 @@ export function buildInterviewGraph() {
   return g.compile();
 }
 
+// Compile once per server instance — the graph is stateless between turns,
+// state travels in via invoke().
+let _compiledGraph: ReturnType<typeof buildInterviewGraph> | null = null;
+function getCompiledGraph() {
+  if (!_compiledGraph) _compiledGraph = buildInterviewGraph();
+  return _compiledGraph;
+}
+
 // ─── Per-turn entry point (used by Vapi webhook) ─────────────────────────────
 
 /**
@@ -137,7 +145,7 @@ export async function runTurn(
   state: InterviewState,
   candidateText: string
 ): Promise<InterviewState> {
-  const compiledGraph = buildInterviewGraph();
+  const compiledGraph = getCompiledGraph();
 
   // Append candidate's turn to transcript
   const stateWithCandidate: InterviewState = {
@@ -161,7 +169,7 @@ export async function runTurn(
  * Run the intro node to start a session.
  */
 export async function runIntro(state: InterviewState): Promise<InterviewState> {
-  const compiledGraph = buildInterviewGraph();
+  const compiledGraph = getCompiledGraph();
   const result = await compiledGraph.invoke(state, { recursionLimit: 5 });
   return result as InterviewState;
 }

@@ -78,7 +78,7 @@ export default function InterviewSessionPage({ params }: PageProps) {
     }
 
     const assistantConfig = {
-      name: "Torque",
+      name: "Torque AI",
       voice: {
         provider: "11labs",
         voiceId: "rachel",

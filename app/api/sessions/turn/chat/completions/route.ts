@@ -1,11 +1,10 @@
 import { NextRequest } from "next/server";
 import { handleTurnRequest } from "@/lib/interview-engine/turn-handler";
 
-// POST /api/sessions/turn — static Vapi custom-llm webhook.
+// POST /api/sessions/turn/chat/completions
 //
-// Handles both the OpenAI chat format Vapi sends (in case the dashboard URL
-// includes /chat/completions itself, some Vapi versions POST here directly)
-// and the legacy { candidateText } format for direct API testing.
+// Vapi's custom-llm provider appends `/chat/completions` to the configured
+// model URL and expects an OpenAI-compatible (SSE-streamable) response.
 // Session identity comes from the Vapi call metadata.
 export const runtime = "nodejs";
 export const maxDuration = 60;

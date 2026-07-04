@@ -21,12 +21,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mentorque — AI Voice Interview Practice",
+  title: "Torque AI — AI Voice Interview Practice",
   description: "Practice real interviews with an AI interviewer that listens, probes, and pushes back. Get structured feedback after every session.",
   keywords: ["AI interview", "mock interview", "behavioral interview", "interview practice", "career prep"],
-  authors: [{ name: "Mentorque" }],
+  authors: [{ name: "Torque AI" }],
   openGraph: {
-    title: "Mentorque — AI Voice Interview Practice",
+    title: "Torque AI — AI Voice Interview Practice",
     description: "Practice real interviews with an AI that listens, probes, and gives detailed feedback.",
     type: "website",
   },

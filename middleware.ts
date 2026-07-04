@@ -19,11 +19,14 @@ export async function middleware(req: NextRequest) {
   );
   const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route));
 
-  // Exclude Vapi webhook from authentication checks
+  // Exclude Vapi webhooks from authentication checks. Vapi calls the
+  // custom-llm endpoint at .../turn/chat/completions (it appends the OpenAI
+  // path to the configured URL) and sometimes adds a trailing slash.
   const cleanPath = pathname.replace(/\/$/, "");
-  const isTurnWebhook = 
-    (cleanPath.startsWith("/api/sessions/") && cleanPath.endsWith("/turn")) ||
-    cleanPath === "/api/sessions/turn";
+  const isTurnWebhook =
+    cleanPath === "/api/sessions/turn" ||
+    (cleanPath.startsWith("/api/sessions/") &&
+      (cleanPath.endsWith("/turn") || cleanPath.endsWith("/turn/chat/completions")));
   if (isTurnWebhook) {
     return NextResponse.next();
   }

@@ -22,7 +22,7 @@ export function buildAssistantConfig(config: VapiAssistantConfig) {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
   return {
-    name: "Torque",
+    name: "Torque AI",
     voice: {
       provider: "11labs",
       voiceId: "rachel", // Standard ElevenLabs voice

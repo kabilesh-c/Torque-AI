@@ -14,7 +14,7 @@ export default function LandingPage() {
             <Zap size={14} className="text-black" />
           </div>
           <span className="font-bold text-[var(--text-primary)]" style={{ fontFamily: "var(--font-geist)" }}>
-            Mentorque
+            Torque AI
           </span>
         </div>
         <div className="flex items-center gap-3">
@@ -202,9 +202,9 @@ export default function LandingPage() {
             <div className="w-5 h-5 rounded-md bg-[var(--accent)] flex items-center justify-center">
               <Zap size={10} className="text-black" />
             </div>
-            Mentorque
+            Torque AI
           </div>
-          <span>Built for Mentorque take-home assignment</span>
+          <span>AI-powered mock interviews &mdash; practice like it's real</span>
         </div>
       </footer>
     </div>

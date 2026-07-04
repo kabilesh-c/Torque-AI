@@ -22,6 +22,20 @@ export interface UseVapiReturn {
   error: string | null;
 }
 
+// Vapi emits errors in several shapes (Error, {error: {message}}, SDK event
+// objects, plain strings). Pull out something human-readable.
+function describeVapiError(err: unknown): string {
+  if (!err) return "Voice call error";
+  if (typeof err === "string") return err;
+  const e = err as { message?: string; error?: { message?: string } | string; errorMsg?: string };
+  const inner = typeof e.error === "string" ? e.error : e.error?.message;
+  const msg = e.message || inner || e.errorMsg;
+  if (msg === "Failed to fetch" || msg?.includes("fetch")) {
+    return "Couldn't reach the voice service. Check your internet connection, and disable adblockers or shields for this site.";
+  }
+  return msg || "Voice call error";
+}
+
 export function useVapi(): UseVapiReturn {
   const vapiRef = useRef<Vapi | null>(null);
   const [status, setStatus] = useState<CallStatus>("idle");
@@ -37,7 +51,10 @@ export function useVapi(): UseVapiReturn {
       return;
     }
 
-    const vapi = new Vapi(apiKey);
+    // Route Vapi REST calls through our own domain (/api/vapi/*) — direct
+    // browser requests to api.vapi.ai are often blocked by adblockers,
+    // Brave shields, firewalls, or ISPs, which kills call creation.
+    const vapi = new Vapi(apiKey, `${window.location.origin}/api/vapi`);
     vapiRef.current = vapi;
 
     vapi.on("call-start", () => {
@@ -81,9 +98,9 @@ export function useVapi(): UseVapiReturn {
       }
     });
 
-    vapi.on("error", (err: Error) => {
+    vapi.on("error", (err: unknown) => {
       console.error("[VAPI ERROR]", err);
-      setError(err.message || "Voice call error");
+      setError(describeVapiError(err));
       setStatus("error");
     });
 
@@ -102,10 +119,22 @@ export function useVapi(): UseVapiReturn {
     try {
       setStatus("connecting");
       setError(null);
+
+      // Request mic access up front so permission failures are reported
+      // distinctly from network/Vapi failures.
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream.getTracks().forEach((t) => t.stop());
+      } catch {
+        setError("Microphone access denied. Allow microphone permissions for this site and try again.");
+        setStatus("error");
+        return;
+      }
+
       await vapi.start(assistant as any, overrides as any);
     } catch (err) {
       console.error("[VAPI START ERROR]", err);
-      setError("Failed to start voice call. Check microphone permissions.");
+      setError(describeVapiError(err));
       setStatus("error");
     }
   }, []);

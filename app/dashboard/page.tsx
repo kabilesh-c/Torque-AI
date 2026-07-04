@@ -72,7 +72,7 @@ export default function DashboardPage() {
           <div className="w-7 h-7 rounded-lg bg-[var(--accent)] flex items-center justify-center">
             <Zap size={14} className="text-black" />
           </div>
-          <span className="font-bold text-sm" style={{ fontFamily: "var(--font-geist)" }}>Mentorque</span>
+          <span className="font-bold text-sm" style={{ fontFamily: "var(--font-geist)" }}>Torque AI</span>
         </Link>
 
         <div className="flex items-center gap-2">

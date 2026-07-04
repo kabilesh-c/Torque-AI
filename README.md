@@ -1,6 +1,6 @@
-# Mentorque — AI Voice Mock Interview Platform
+# Torque AI — AI Voice Mock Interview Platform
 
-An AI voice interviewer that listens, reasons about your answers in real time, and decides to follow up, probe, or move on — no fixed question bank. Built as a take-home assignment for Mentorque.
+An AI voice interviewer that listens, reasons about your answers in real time, and decides to follow up, probe, or move on — no fixed question bank. Torque AI — practice interviews that feel real.
 
 ## Quick Start (5 commands)
 
