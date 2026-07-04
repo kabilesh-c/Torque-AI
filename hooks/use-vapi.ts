@@ -27,11 +27,17 @@ export interface UseVapiReturn {
 function describeVapiError(err: unknown): string {
   if (!err) return "Voice call error";
   if (typeof err === "string") return err;
-  const e = err as { message?: string; error?: { message?: string } | string; errorMsg?: string };
+  const e = err as { message?: unknown; error?: { message?: unknown } | string; errorMsg?: unknown };
   const inner = typeof e.error === "string" ? e.error : e.error?.message;
-  const msg = e.message || inner || e.errorMsg;
-  if (msg === "Failed to fetch" || msg?.includes("fetch")) {
+  // Vapi error events are loosely shaped — any of these may be a non-string
+  const msg = [e.message, inner, e.errorMsg].find(
+    (m): m is string => typeof m === "string" && m.length > 0
+  );
+  if (msg && (msg === "Failed to fetch" || msg.includes("fetch"))) {
     return "Couldn't reach the voice service. Check your internet connection, and disable adblockers or shields for this site.";
+  }
+  if (msg?.includes("ejection") || msg?.includes("Meeting has ended")) {
+    return "The call was ended by the voice service — usually because no microphone audio was received. Check that the right mic is selected and not muted, then try again.";
   }
   return msg || "Voice call error";
 }
@@ -60,6 +66,20 @@ export function useVapi(): UseVapiReturn {
     vapi.on("call-start", () => {
       setStatus("active");
       setError(null);
+
+      // The SDK force-enables Krisp noise cancellation after joining. Its WASM
+      // frequently fails to load (blocked/unsupported), which crashes the mic
+      // processor and leaves Vapi receiving no customer audio — the call then
+      // gets ejected with "assistant-did-not-receive-customer-audio".
+      // Disable the processor and make sure the mic track is live.
+      const daily = vapi.getDailyCallObject();
+      if (daily) {
+        Promise.resolve(
+          daily.updateInputSettings({ audio: { processor: { type: "none" } } })
+        )
+          .then(() => daily.setLocalAudio(true))
+          .catch((e) => console.warn("[VAPI] could not disable audio processor", e));
+      }
     });
 
     vapi.on("call-end", () => {
