@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Zap, Mail, Lock, User, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, User, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -75,9 +76,7 @@ export default function SignupPage() {
 
         <div className="relative z-10">
           <Link href="/" className="flex items-center gap-2 w-fit">
-            <div className="w-8 h-8 rounded-lg bg-[var(--accent)] flex items-center justify-center">
-              <Zap size={16} className="text-black" />
-            </div>
+            <Logo size={32} />
             <span className="font-bold text-[var(--text-primary)]" style={{ fontFamily: "var(--font-geist)" }}>
               Torque AI
             </span>
@@ -119,9 +118,7 @@ export default function SignupPage() {
         <div className="w-full max-w-sm animate-slide-up">
           {/* Mobile logo */}
           <Link href="/" className="flex items-center gap-2 w-fit mb-8 lg:hidden">
-            <div className="w-7 h-7 rounded-lg bg-[var(--accent)] flex items-center justify-center">
-              <Zap size={14} className="text-black" />
-            </div>
+            <Logo size={28} />
             <span className="font-bold" style={{ fontFamily: "var(--font-geist)" }}>Torque AI</span>
           </Link>
 

@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { SessionCard } from "@/components/dashboard/SessionCard";
-import { Zap, Plus, LogOut, User } from "lucide-react";
+import { Plus, LogOut, User } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Logo } from "@/components/ui/logo";
 
 interface Session {
   id: string;
@@ -69,9 +70,7 @@ export default function DashboardPage() {
       {/* Nav */}
       <nav className="sticky top-0 z-40 flex items-center justify-between px-6 py-4 border-b border-[var(--border)] bg-[rgba(0,0,0,0.85)] backdrop-blur-xl">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-[var(--accent)] flex items-center justify-center">
-            <Zap size={14} className="text-black" />
-          </div>
+          <Logo size={28} />
           <span className="font-bold text-sm" style={{ fontFamily: "var(--font-geist)" }}>Torque AI</span>
         </Link>
 

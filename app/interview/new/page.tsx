@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Zap, LayoutDashboard } from "lucide-react";
+import { ArrowRight, LayoutDashboard } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 
 const INTERVIEW_TYPES = [
   {
@@ -88,9 +89,7 @@ export default function NewInterviewPage() {
       {/* Nav */}
       <nav className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)]">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-[var(--accent)] flex items-center justify-center">
-            <Zap size={14} className="text-black" />
-          </div>
+          <Logo size={28} />
           <span className="font-bold text-sm" style={{ fontFamily: "var(--font-geist)" }}>Torque AI</span>
         </Link>
         <Link href="/dashboard">

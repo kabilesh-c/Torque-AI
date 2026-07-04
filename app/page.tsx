@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Mic, Brain, BarChart3, Zap } from "lucide-react";
+import { ArrowRight, Mic, Brain, BarChart3 } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 
 export default function LandingPage() {
   return (
@@ -10,9 +11,7 @@ export default function LandingPage() {
       {/* Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 border-b border-[var(--border)] bg-[rgba(0,0,0,0.8)] backdrop-blur-xl">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-[var(--accent)] flex items-center justify-center">
-            <Zap size={14} className="text-black" />
-          </div>
+          <Logo size={28} />
           <span className="font-bold text-[var(--text-primary)]" style={{ fontFamily: "var(--font-geist)" }}>
             Torque AI
           </span>
@@ -199,9 +198,7 @@ export default function LandingPage() {
       <footer className="border-t border-[var(--border)] px-6 py-8">
         <div className="max-w-5xl mx-auto flex items-center justify-between text-xs text-[var(--text-muted)]">
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-md bg-[var(--accent)] flex items-center justify-center">
-              <Zap size={10} className="text-black" />
-            </div>
+            <Logo size={20} />
             Torque AI
           </div>
           <span>AI-powered mock interviews &mdash; practice like it's real</span>

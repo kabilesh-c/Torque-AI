@@ -4,7 +4,8 @@ import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { InterviewTypeBadge, StatusBadge } from "@/components/ui/badge";
-import { Zap, ArrowLeft, CheckCircle2, XCircle, ChevronDown, ChevronUp, LayoutDashboard, Share2, Download, Check } from "lucide-react";
+import { ArrowLeft, CheckCircle2, XCircle, ChevronDown, ChevronUp, LayoutDashboard, Share2, Download, Check } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 
 interface Turn { speaker: string; text: string; timestamp: string; }
 interface StarAnalysis { situation: boolean; task: boolean; action: boolean; result: boolean; notes: string; }
@@ -98,9 +99,7 @@ export default function SessionReportPage({ params }: { params: Promise<{ sessio
       <nav className="sticky top-0 z-40 flex items-center justify-between px-6 py-4 border-b border-[var(--border)] bg-[rgba(0,0,0,0.85)] backdrop-blur-xl">
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-[var(--accent)] flex items-center justify-center">
-              <Zap size={12} className="text-black" />
-            </div>
+            <Logo size={24} />
           </Link>
           <span className="text-[var(--border-strong)]">/</span>
           <Link href="/dashboard" className="text-sm text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors flex items-center gap-1.5">

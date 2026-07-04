@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Image from "next/image";
 import { AutoPrint } from "./AutoPrint";
 
 // Public, read-only interview report — reachable by anyone with the share
@@ -61,11 +62,7 @@ export default async function SharedReportPage({
         <header className="px-10 pt-10 pb-6 border-b-2 border-neutral-900">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-md bg-neutral-900 flex items-center justify-center">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e8ff00" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                </svg>
-              </div>
+              <Image src="/logo.png" alt="Torque AI" width={32} height={32} className="rounded-md" />
               <span className="text-xl font-bold tracking-tight">Torque AI</span>
             </div>
             <span className="text-xs uppercase tracking-widest text-neutral-500">Interview Feedback Report</span>

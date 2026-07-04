@@ -29,6 +29,7 @@ export const metadata: Metadata = {
     title: "Torque AI — AI Voice Interview Practice",
     description: "Practice real interviews with an AI that listens, probes, and gives detailed feedback.",
     type: "website",
+    images: ["/logo.png"],
   },
 };
 

@@ -7,8 +7,9 @@ import { OrbVisualizer } from "@/components/interview/OrbVisualizer";
 import { TranscriptPanel } from "@/components/interview/TranscriptPanel";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Mic, MicOff, PhoneOff, Clock, ChevronDown, ChevronUp, Zap } from "lucide-react";
+import { Mic, MicOff, PhoneOff, Clock, ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
+import { Logo } from "@/components/ui/logo";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -161,9 +162,7 @@ export default function InterviewSessionPage({ params }: PageProps) {
       <header className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)]">
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-[var(--accent)] flex items-center justify-center">
-              <Zap size={12} className="text-black" />
-            </div>
+            <Logo size={24} />
           </Link>
           {sessionData?.interviewType && (
             <Badge variant="muted">{typeLabel[sessionData.interviewType] || sessionData.interviewType}</Badge>

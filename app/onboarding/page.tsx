@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Input, Select } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Zap, User, Briefcase, TrendingUp, Check } from "lucide-react";
+import { User, Briefcase, TrendingUp, Check } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 
 const STEPS = [
   { id: 1, label: "Your name", icon: User },
@@ -68,9 +69,7 @@ export default function OnboardingPage() {
     <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-6">
       {/* Logo */}
       <div className="fixed top-6 left-6 flex items-center gap-2">
-        <div className="w-7 h-7 rounded-lg bg-[var(--accent)] flex items-center justify-center">
-          <Zap size={14} className="text-black" />
-        </div>
+        <Logo size={28} />
         <span className="font-bold text-sm text-[var(--text-primary)]" style={{ fontFamily: "var(--font-geist)" }}>Torque AI</span>
       </div>
 
