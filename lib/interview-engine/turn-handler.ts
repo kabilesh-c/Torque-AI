@@ -69,6 +69,18 @@ export interface TurnResult {
   turnCount: number;
 }
 
+// Phrases that explicitly reference ending the interview/call always count;
+// generic sign-offs ("I'm done", "that's all") only count when the utterance
+// is short — inside a real answer they're usually mid-sentence filler.
+const EXPLICIT_END = /\b(end|stop|finish|quit|leave|conclude|terminate)\b.{0,30}\b(interview|call|session)\b|\b(interview|call|session)\b.{0,20}\b(end|stop|over|done)\b/i;
+const GENERIC_END = /\b(i'?m done|i am done|that('?s| is) (all|it)( from me| for me)?|let'?s (stop|end|finish|wrap( it| this)? up)|no more questions|i (want|would like|'?d like) to (stop|quit|leave))\b/i;
+
+export function isEndRequest(text: string): boolean {
+  if (EXPLICIT_END.test(text)) return true;
+  const words = text.trim().split(/\s+/).length;
+  return words <= 10 && GENERIC_END.test(text);
+}
+
 /**
  * Run one interview turn: rebuild graph state from the DB transcript, run the
  * LangGraph engine, persist the new turns in a single batched write.
@@ -95,6 +107,25 @@ export async function processTurn(
     text: t.text,
     graphNode: t.graphNode || undefined,
   }));
+
+  // Candidate asked to end — skip the graph, say a graceful goodbye that
+  // contains the assistant's end-call phrase so Vapi hangs up on its own,
+  // and mark the turn so the report notes the early end.
+  if (isEndRequest(candidateText)) {
+    const firstName = session.user.name.split(" ")[0] || session.user.name;
+    const goodbye =
+      `Of course — thank you for your time today, ${firstName}. ` +
+      `We'll stop here, and your feedback report will be ready in a moment. ` +
+      `This concludes your interview.`;
+    const base = Date.now();
+    await prisma.turn.createMany({
+      data: [
+        { sessionId, speaker: "CANDIDATE", text: candidateText, graphNode: "candidate_requested_end", timestamp: new Date(base) },
+        { sessionId, speaker: "AI", text: goodbye, graphNode: "early_end", timestamp: new Date(base + 1) },
+      ],
+    });
+    return { text: goodbye, isComplete: true, turnCount: transcript.length + 2 };
+  }
 
   const currentState: InterviewState = {
     sessionId: session.id,

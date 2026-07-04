@@ -18,11 +18,17 @@ export async function POST(
     include: {
       transcript: { orderBy: { timestamp: "asc" } },
       user: { select: { name: true, jobRole: true, experience: true } },
+      report: true,
     },
   });
 
   if (!session) return NextResponse.json({ error: "Session not found" }, { status: 404 });
   if (session.userId !== user.userId) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
+  // Idempotent — the client may call this twice (manual end + auto-finish)
+  if (session.report) {
+    return NextResponse.json({ report: session.report });
+  }
 
   // Mark session as completed
   await prisma.session.update({

@@ -4,7 +4,7 @@ import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { InterviewTypeBadge, StatusBadge } from "@/components/ui/badge";
-import { Zap, ArrowLeft, CheckCircle2, XCircle, ChevronDown, ChevronUp, LayoutDashboard } from "lucide-react";
+import { Zap, ArrowLeft, CheckCircle2, XCircle, ChevronDown, ChevronUp, LayoutDashboard, Share2, Download, Check } from "lucide-react";
 
 interface Turn { speaker: string; text: string; timestamp: string; }
 interface StarAnalysis { situation: boolean; task: boolean; action: boolean; result: boolean; notes: string; }
@@ -30,6 +30,40 @@ export default function SessionReportPage({ params }: { params: Promise<{ sessio
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [showTranscript, setShowTranscript] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [sharing, setSharing] = useState(false);
+
+  // Both Share and Download use the public document page — fetch (or create)
+  // its share token on demand.
+  const getShareUrl = async (): Promise<string | null> => {
+    const res = await fetch(`/api/sessions/${sessionId}/share`, { method: "POST" });
+    if (!res.ok) return null;
+    const { token } = await res.json();
+    return `${window.location.origin}/report/${token}`;
+  };
+
+  const handleShare = async () => {
+    setSharing(true);
+    const url = await getShareUrl();
+    setSharing(false);
+    if (!url) return;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: "Torque AI — Interview Feedback Report", url });
+        return;
+      } catch {
+        // user dismissed the sheet — fall through to clipboard
+      }
+    }
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleDownload = async () => {
+    const url = await getShareUrl();
+    if (url) window.open(`${url}?print=1`, "_blank");
+  };
 
   useEffect(() => {
     fetch(`/api/sessions/${sessionId}`)
@@ -95,14 +129,30 @@ export default function SessionReportPage({ params }: { params: Promise<{ sessio
               <span className="text-xs text-[var(--text-muted)]">{duration} min</span>
             )}
           </div>
-          <h1 className="text-3xl font-bold text-[var(--text-primary)] mb-1" style={{ fontFamily: "var(--font-geist)", letterSpacing: "-0.035em" }}>
-            Interview Report
-          </h1>
-          <p className="text-sm text-[var(--text-muted)]">
-            {new Date(session.startedAt).toLocaleDateString("en-US", {
-              weekday: "long", year: "numeric", month: "long", day: "numeric",
-            })}
-          </p>
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <h1 className="text-3xl font-bold text-[var(--text-primary)] mb-1" style={{ fontFamily: "var(--font-geist)", letterSpacing: "-0.035em" }}>
+                Interview Report
+              </h1>
+              <p className="text-sm text-[var(--text-muted)]">
+                {new Date(session.startedAt).toLocaleDateString("en-US", {
+                  weekday: "long", year: "numeric", month: "long", day: "numeric",
+                })}
+              </p>
+            </div>
+            {report && (
+              <div className="flex items-center gap-2">
+                <Button variant="secondary" size="sm" onClick={handleShare} loading={sharing} id="share-report-btn" className="gap-1.5">
+                  {copied ? <Check size={13} className="text-[var(--accent-green)]" /> : <Share2 size={13} />}
+                  {copied ? "Link copied" : "Share"}
+                </Button>
+                <Button variant="secondary" size="sm" onClick={handleDownload} id="download-report-btn" className="gap-1.5">
+                  <Download size={13} />
+                  Download PDF
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* No report yet */}

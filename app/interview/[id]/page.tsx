@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useState, useCallback } from "react";
+import { use, useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useVapi } from "@/hooks/use-vapi";
 import { OrbVisualizer } from "@/components/interview/OrbVisualizer";
@@ -113,14 +113,29 @@ export default function InterviewSessionPage({ params }: PageProps) {
     setCallStarted(true);
   }, [sessionData, id, startCall]);
 
-  const handleEndCall = useCallback(async () => {
+  // End the session exactly once (report generation + redirect), whether the
+  // user clicked "End interview" or Vapi ended the call on its own (wrap-up
+  // phrase, candidate asked to stop, or silence timeout).
+  const finishedRef = useRef(false);
+  const finishSession = useCallback(async () => {
+    if (finishedRef.current) return;
+    finishedRef.current = true;
     setIsEnding(true);
-    endCall();
-
-    // End session + generate report
     await fetch(`/api/sessions/${id}/end`, { method: "POST" });
     router.push(`/dashboard/${id}`);
-  }, [endCall, id, router]);
+  }, [id, router]);
+
+  const handleEndCall = useCallback(async () => {
+    endCall();
+    await finishSession();
+  }, [endCall, finishSession]);
+
+  // Auto-finish when the call ends remotely
+  useEffect(() => {
+    if (status === "ended" && callStarted) {
+      finishSession();
+    }
+  }, [status, callStarted, finishSession]);
 
   const typeLabel: Record<string, string> = {
     BEHAVIORAL: "Behavioral",

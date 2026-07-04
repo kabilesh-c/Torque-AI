@@ -30,6 +30,7 @@ model Session {
   startedAt     DateTime        @default(now())
   endedAt       DateTime?
   vapiCallId    String?
+  shareToken    String?         @unique // public share link for the report
   transcript    Turn[]
   report        FeedbackReport?
 }

@@ -5,7 +5,12 @@ export interface InterviewPersona {
   topicsPlanned: string[];
   evaluationFocus: string;
   openingContext: string;
+  /** Canned first question — lets session creation skip the LLM entirely */
+  firstQuestion: string;
 }
+
+/** The interviewer's name — spoken in the intro and referenced in prompts */
+export const INTERVIEWER_NAME = "Ava";
 
 export const PERSONAS: Record<InterviewType, InterviewPersona> = {
   BEHAVIORAL: {
@@ -25,6 +30,8 @@ Evaluate: STAR completeness (Situation, Task, Action, Result), specificity of ex
       "STAR completeness, specificity, self-awareness, ownership vs deflection",
     openingContext:
       "behavioral competencies and real work experiences from the candidate's past",
+    firstQuestion:
+      "To get us started — tell me about a time you had a disagreement with a teammate or manager. What happened, and how did you handle it?",
   },
 
   TECHNICAL: {
@@ -44,6 +51,8 @@ Evaluate: correctness, depth under probing, ability to reason through unknowns o
       "correctness, depth when probed, edge case reasoning, communication of technical thinking",
     openingContext:
       "technical problem solving, algorithms, and engineering trade-offs",
+    firstQuestion:
+      "Let's begin with fundamentals — walk me through how a hash table works under the hood, and when you'd pick one over a binary search tree.",
   },
 
   SYSTEM_DESIGN: {
@@ -62,6 +71,8 @@ Evaluate: does the candidate ask clarifying questions first, discuss trade-offs 
     evaluationFocus:
       "requirements clarification, trade-off discussion, handling pushback on assumptions, scalability awareness",
     openingContext: "system design, architecture, and distributed systems",
+    firstQuestion:
+      "Here's your design problem — build a URL shortener like bit.ly. Before you dive into the architecture, what would you want to clarify about the requirements?",
   },
 
   HR_CULTURE: {
@@ -79,6 +90,8 @@ Evaluate: motivation clarity, values alignment, situational judgment under follo
     evaluationFocus:
       "motivation clarity, values alignment, situational judgment under what-if scenarios",
     openingContext: "culture fit, motivations, working style, and values",
+    firstQuestion:
+      "To start us off — what motivated you to pursue this role, and what are you hoping to find in your next position?",
   },
 };
 
@@ -86,7 +99,7 @@ export function getPersona(interviewType: InterviewType): InterviewPersona {
   const persona = PERSONAS[interviewType];
   return {
     ...persona,
-    systemPrompt: `${persona.systemPrompt}
+    systemPrompt: `Your name is ${INTERVIEWER_NAME} and you conduct interviews on behalf of Torque AI. ${persona.systemPrompt}
 
 Conversational Guidelines (Real-time Human Pacing):
 - If the candidate cut in or interrupted you (indicated by a short, sudden candidate turn in the transcript), begin your response with a natural, polite conversational nod (e.g., "Oh, my bad, please go ahead...", "No problem, go right ahead!", "Apologies, please continue...").
