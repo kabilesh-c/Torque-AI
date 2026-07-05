@@ -50,9 +50,9 @@ export default function LandingPage() {
             curvature={0.1}
             tint="#b8ff00"
             mouseReact
-            mouseStrength={0.5}
-            brightness={0.6}
-            className="w-full h-full opacity-40"
+            mouseStrength={0.65}
+            brightness={1}
+            className="w-full h-full"
             style={{}}
           />
         </div>
@@ -62,7 +62,7 @@ export default function LandingPage() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse 70% 55% at 50% 42%, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.4) 45%, transparent 75%), linear-gradient(to bottom, var(--bg) 0%, transparent 12%, transparent 85%, var(--bg) 100%)",
+              "radial-gradient(ellipse 70% 55% at 50% 42%, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.55) 45%, transparent 75%), linear-gradient(to bottom, var(--bg) 0%, transparent 12%, transparent 85%, var(--bg) 100%)",
           }}
         />
 
