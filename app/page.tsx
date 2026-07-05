@@ -65,7 +65,7 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-6 pt-20">
+      <section className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-6 pt-20 pointer-events-none">
         {/* Extra darkening focused behind the headline, on top of the global scrim */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -75,7 +75,7 @@ export default function LandingPage() {
           }}
         />
 
-        <div className="relative z-10 max-w-4xl mx-auto">
+        <div className="relative z-10 max-w-4xl mx-auto pointer-events-auto">
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--surface-elevated)] mb-8 text-xs text-[var(--text-muted)]">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
@@ -125,7 +125,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features */}
-      <section className="relative z-10 py-32 px-6">
+      <section className="relative z-10 py-32 px-6 pointer-events-none">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <h2
@@ -143,7 +143,7 @@ export default function LandingPage() {
             {features.map((f, i) => (
               <div
                 key={f.title}
-                className="relative p-6 rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--surface)] group hover:border-[var(--border-strong)] hover:bg-[var(--surface-elevated)] transition-all duration-300"
+                className="relative p-6 rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--surface)] group hover:border-[var(--border-strong)] hover:bg-[var(--surface-elevated)] transition-all duration-300 pointer-events-auto"
                 style={{ animationDelay: `${i * 100}ms` }}
               >
                 <div className="w-10 h-10 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border)] flex items-center justify-center mb-4 group-hover:border-[var(--border-strong)] transition-colors">
@@ -160,7 +160,7 @@ export default function LandingPage() {
       </section>
 
       {/* Interview rounds — detailed */}
-      <section className="relative z-10 py-24 px-6 border-t border-[var(--border)]">
+      <section className="relative z-10 py-24 px-6 border-t border-[var(--border)] pointer-events-none">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h2
@@ -177,11 +177,7 @@ export default function LandingPage() {
             {interviewTypes.map((t, i) => (
               <div
                 key={t.label}
-                className={`p-6 rounded-[var(--radius-xl)] border transition-all duration-200 hover:bg-[var(--surface-elevated)] ${
-                  i === 0
-                    ? "border-[rgba(232,255,0,0.3)] bg-[var(--accent-dim)]"
-                    : "border-[var(--border)] bg-[var(--surface)]"
-                }`}
+                className="p-6 rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--surface)] transition-all duration-200 hover:border-[var(--border-strong)] hover:bg-[var(--surface-elevated)] pointer-events-auto"
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="text-2xl">{t.emoji}</div>
@@ -207,7 +203,7 @@ export default function LandingPage() {
       </section>
 
       {/* Why Torque AI */}
-      <section className="relative z-10 py-24 px-6 border-t border-[var(--border)]">
+      <section className="relative z-10 py-24 px-6 border-t border-[var(--border)] pointer-events-none">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h2
@@ -225,7 +221,7 @@ export default function LandingPage() {
             {whyItems.map((w, i) => (
               <div
                 key={w.title}
-                className="relative p-6 rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-elevated)] transition-all duration-300"
+                className="relative p-6 rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-elevated)] transition-all duration-300 pointer-events-auto"
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-10 h-10 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border)] flex items-center justify-center">
@@ -246,7 +242,7 @@ export default function LandingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="relative z-10 py-24 px-6 border-t border-[var(--border)]">
+      <section className="relative z-10 py-24 px-6 border-t border-[var(--border)] pointer-events-none">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-12">
             <h2
@@ -256,7 +252,7 @@ export default function LandingPage() {
               Frequently asked questions
             </h2>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-3 pointer-events-auto">
             {faqs.map((faq) => (
               <FaqItem key={faq.q} question={faq.q} answer={faq.a} />
             ))}
@@ -265,8 +261,8 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="relative z-10 py-24 px-6 border-t border-[var(--border)]">
-        <div className="max-w-2xl mx-auto text-center">
+      <section className="relative z-10 py-24 px-6 border-t border-[var(--border)] pointer-events-none">
+        <div className="max-w-2xl mx-auto text-center pointer-events-auto">
           <h2
             className="text-4xl font-bold mb-4 text-[var(--text-primary)]"
             style={{ fontFamily: "var(--font-geist)", letterSpacing: "-0.03em" }}
