@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Mail, Lock, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, ArrowRight, Eye, EyeOff, Sparkles } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 
 export default function LoginPage() {
@@ -14,6 +14,23 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState("");
+  const [demoLoading, setDemoLoading] = useState(false);
+
+  const handleDemoLogin = async () => {
+    setDemoLoading(true);
+    setServerError("");
+
+    const res = await fetch("/api/auth/demo", { method: "POST" });
+
+    if (!res.ok) {
+      setDemoLoading(false);
+      setServerError("Could not start the demo. Please try again.");
+      return;
+    }
+
+    // Fresh account, same as a real signup — straight to onboarding.
+    router.push("/onboarding");
+  };
 
   const handleSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault();
@@ -115,6 +132,34 @@ export default function LoginPage() {
                 Sign up free
               </Link>
             </p>
+          </div>
+
+          {/* Evaluator / recruiter fast-path — skips signup, goes through the same onboarding as a real account */}
+          <div className="mb-6 p-4 rounded-[var(--radius-lg)] border border-[rgba(232,255,0,0.25)] bg-[var(--accent-dim)]">
+            <div className="flex items-start gap-2.5 mb-3">
+              <Sparkles size={15} className="text-[var(--accent)] flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                <span className="text-[var(--text-primary)] font-medium">Evaluating Torque AI?</span>{" "}
+                Skip the signup — try a full interview instantly with a temporary demo account.
+              </p>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="w-full"
+              onClick={handleDemoLogin}
+              loading={demoLoading}
+              id="demo-login-btn"
+            >
+              {!demoLoading && <>Try Torque AI — Demo <ArrowRight size={14} /></>}
+            </Button>
+          </div>
+
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-px flex-1 bg-[var(--border)]" />
+            <span className="text-xs text-[var(--text-muted)] uppercase tracking-wide">or sign in</span>
+            <div className="h-px flex-1 bg-[var(--border)]" />
           </div>
 
           {serverError && (
