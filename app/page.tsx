@@ -42,7 +42,7 @@ export default function LandingPage() {
         className="fixed inset-0 z-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(to bottom, var(--bg) 0%, rgba(0,0,0,0.6) 8%, rgba(0,0,0,0.6) 92%, var(--bg) 100%)",
+            "linear-gradient(to bottom, var(--bg) 0%, rgba(0,0,0,0.55) 8%, rgba(0,0,0,0.55) 100%)",
         }}
       />
 
@@ -281,8 +281,16 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-[var(--border)] px-6 py-10 bg-[var(--bg)]">
-        <div className="max-w-5xl mx-auto">
+      <footer className="relative z-10 px-6 py-16 pointer-events-none">
+        <div
+          className="max-w-5xl mx-auto rounded-[var(--radius-xl)] border border-white/10 px-8 py-8 pointer-events-auto"
+          style={{
+            background: "rgba(255, 255, 255, 0.05)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.37), inset 0 1px 0 rgba(255, 255, 255, 0.08)",
+          }}
+        >
           <div className="flex items-center justify-between flex-wrap gap-6">
             <div className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
               <Logo size={22} />
@@ -295,7 +303,7 @@ export default function LandingPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="GitHub"
-                className="p-2.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] transition-colors"
+                className="p-2.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-white/10 transition-colors"
               >
                 <Github size={17} />
               </a>
@@ -304,20 +312,20 @@ export default function LandingPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="LinkedIn"
-                className="p-2.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] transition-colors"
+                className="p-2.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-white/10 transition-colors"
               >
                 <Linkedin size={17} />
               </a>
               <a
                 href="mailto:kabileshc.dev@gmail.com"
                 title="kabileshc.dev@gmail.com"
-                className="p-2.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] transition-colors"
+                className="p-2.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-white/10 transition-colors"
               >
                 <Mail size={17} />
               </a>
             </div>
           </div>
-          <div className="mt-6 pt-6 border-t border-[var(--border-subtle)] flex items-center justify-between flex-wrap gap-3 text-xs text-[var(--text-muted)]">
+          <div className="mt-6 pt-6 border-t border-white/10 flex items-center justify-between flex-wrap gap-3 text-xs text-[var(--text-muted)]">
             <span className="flex items-center gap-1.5">
               Made with <Heart size={12} className="text-[var(--destructive)] fill-[var(--destructive)]" /> by{" "}
               <a
