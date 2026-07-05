@@ -16,8 +16,38 @@ const FaultyTerminal = dynamic(() => import("@/components/FaultyTerminal/FaultyT
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[var(--bg)] overflow-hidden">
+      {/* Faulty terminal background — fixed behind the entire page */}
+      <div className="fixed inset-0 z-0">
+        <FaultyTerminal
+          scale={1.5}
+          digitSize={1.2}
+          scanlineIntensity={0.5}
+          glitchAmount={1}
+          flickerAmount={1}
+          noiseAmp={1}
+          chromaticAberration={0}
+          dither={0}
+          curvature={0.1}
+          tint="#b8ff00"
+          mouseReact
+          mouseStrength={0.65}
+          brightness={1}
+          className="w-full h-full"
+          style={{}}
+        />
+      </div>
+
+      {/* Legibility scrim — keeps body text readable everywhere the page scrolls */}
+      <div
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to bottom, var(--bg) 0%, rgba(0,0,0,0.6) 8%, rgba(0,0,0,0.6) 92%, var(--bg) 100%)",
+        }}
+      />
+
       {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 border-b border-[var(--border)] bg-[rgba(0,0,0,0.8)] backdrop-blur-xl">
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 border-b border-[var(--border)] bg-[rgba(0,0,0,0.85)] backdrop-blur-xl">
         <div className="flex items-center gap-2">
           <Logo size={28} />
           <span className="font-bold text-[var(--text-primary)]" style={{ fontFamily: "var(--font-geist)" }}>
@@ -35,34 +65,13 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="relative flex flex-col items-center justify-center min-h-screen text-center px-6 pt-20">
-        {/* Faulty terminal background */}
-        <div className="absolute inset-0">
-          <FaultyTerminal
-            scale={1.5}
-            digitSize={1.2}
-            scanlineIntensity={0.5}
-            glitchAmount={1}
-            flickerAmount={1}
-            noiseAmp={1}
-            chromaticAberration={0}
-            dither={0}
-            curvature={0.1}
-            tint="#b8ff00"
-            mouseReact
-            mouseStrength={0.65}
-            brightness={1}
-            className="w-full h-full"
-            style={{}}
-          />
-        </div>
-
-        {/* Legibility scrim over the terminal effect */}
+      <section className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-6 pt-20">
+        {/* Extra darkening focused behind the headline, on top of the global scrim */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse 70% 55% at 50% 42%, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.55) 45%, transparent 75%), linear-gradient(to bottom, var(--bg) 0%, transparent 12%, transparent 85%, var(--bg) 100%)",
+              "radial-gradient(ellipse 70% 55% at 50% 42%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 45%, transparent 75%)",
           }}
         />
 
@@ -116,7 +125,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features */}
-      <section className="relative py-32 px-6">
+      <section className="relative z-10 py-32 px-6">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <h2
@@ -151,7 +160,7 @@ export default function LandingPage() {
       </section>
 
       {/* Interview rounds — detailed */}
-      <section className="py-24 px-6 border-t border-[var(--border)]">
+      <section className="relative z-10 py-24 px-6 border-t border-[var(--border)]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h2
@@ -198,7 +207,7 @@ export default function LandingPage() {
       </section>
 
       {/* Why Torque AI */}
-      <section className="py-24 px-6 border-t border-[var(--border)]">
+      <section className="relative z-10 py-24 px-6 border-t border-[var(--border)]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h2
@@ -237,7 +246,7 @@ export default function LandingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-24 px-6 border-t border-[var(--border)]">
+      <section className="relative z-10 py-24 px-6 border-t border-[var(--border)]">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-12">
             <h2
@@ -256,7 +265,7 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 px-6 border-t border-[var(--border)]">
+      <section className="relative z-10 py-24 px-6 border-t border-[var(--border)]">
         <div className="max-w-2xl mx-auto text-center">
           <h2
             className="text-4xl font-bold mb-4 text-[var(--text-primary)]"
@@ -276,7 +285,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[var(--border)] px-6 py-10">
+      <footer className="relative z-10 border-t border-[var(--border)] px-6 py-10 bg-[var(--bg)]">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center justify-between flex-wrap gap-6">
             <div className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
