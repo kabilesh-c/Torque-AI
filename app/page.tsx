@@ -1,11 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Mic, Brain, BarChart3, FileDown, Repeat, AudioLines, ChevronDown, Github, Linkedin, Mail, Heart } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
-import { FaultyTerminal } from "@/components/ui/faulty-terminal";
+
+// WebGL (ogl) — reads `window` in a default param, so it must never run
+// during SSR. Client-only dynamic import, per react-bits' own Next.js guidance.
+const FaultyTerminal = dynamic(() => import("@/components/FaultyTerminal/FaultyTerminal"), {
+  ssr: false,
+});
 
 export default function LandingPage() {
   return (
@@ -31,7 +37,7 @@ export default function LandingPage() {
       {/* Hero */}
       <section className="relative flex flex-col items-center justify-center min-h-screen text-center px-6 pt-20">
         {/* Faulty terminal background */}
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0">
           <FaultyTerminal
             scale={1.5}
             digitSize={1.2}
@@ -47,6 +53,7 @@ export default function LandingPage() {
             mouseStrength={0.5}
             brightness={0.6}
             className="w-full h-full opacity-40"
+            style={{}}
           />
         </div>
 
