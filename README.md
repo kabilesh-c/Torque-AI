@@ -322,10 +322,3 @@ Session history, average score, and quick access to start a new interview.
 Voice-only — the AI interviewer speaks, listens, and reacts in real time.
 
 ![Live interview](./docs/screenshots/live-interview.png)
-
----
-
-## Author
-
-Made by **Kabilesh C**
-[GitHub](https://github.com/kabilesh-c) · [LinkedIn](https://www.linkedin.com/in/kabilesh-c20) · [kabileshc.dev@gmail.com](mailto:kabileshc.dev@gmail.com)

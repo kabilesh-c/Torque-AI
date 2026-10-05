@@ -299,7 +299,7 @@ export default function LandingPage() {
             </div>
             <div className="flex items-center gap-1">
               <a
-                href="https://github.com/kabilesh-c"
+                href="https://github.com/Nandu-Codes"
                 target="_blank"
                 rel="noopener noreferrer"
                 title="GitHub"
@@ -308,7 +308,7 @@ export default function LandingPage() {
                 <Github size={17} />
               </a>
               <a
-                href="https://www.linkedin.com/in/kabilesh-c20"
+                href="https://www.linkedin.com/in/nandu-codes/"
                 target="_blank"
                 rel="noopener noreferrer"
                 title="LinkedIn"
@@ -317,8 +317,8 @@ export default function LandingPage() {
                 <Linkedin size={17} />
               </a>
               <a
-                href="mailto:kabileshc.dev@gmail.com"
-                title="kabileshc.dev@gmail.com"
+                href="mailto:nandinik030706@gmail.com"
+                title="nandinik030706@gmail.com"
                 className="p-2.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-white/10 transition-colors"
               >
                 <Mail size={17} />
@@ -329,16 +329,16 @@ export default function LandingPage() {
             <span className="flex items-center gap-1.5">
               Made with <Heart size={12} className="text-[var(--destructive)] fill-[var(--destructive)]" /> by{" "}
               <a
-                href="https://github.com/kabilesh-c"
+                href="https://github.com/Nandu-Codes"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors font-medium"
               >
-                Kabilesh C
+                Nandini J
               </a>
             </span>
-            <a href="mailto:kabileshc.dev@gmail.com" className="hover:text-[var(--text-secondary)] transition-colors">
-              kabileshc.dev@gmail.com
+            <a href="mailto:nandinik030706@gmail.com" className="hover:text-[var(--text-secondary)] transition-colors">
+              nandinik030706@gmail.com
             </a>
           </div>
         </div>
